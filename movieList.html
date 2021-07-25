@@ -10,72 +10,72 @@
     <script type="text/babel">
 
       function MovieInfo({keyword,type}) {
-        const link = `
-        https://www.omdbapi.com/?s=${keyword}&page=2&apikey=b293d970&r=json
-        `
-        const [movies, setMovies] = React.useState([])
-    const arr = []
-  
-        React.useEffect(() => {
-          if (!keyword) {
-            return
-          }
-          fetch(link)
-          .then(r => r.json())
-          .then(response => {
-              if(type){
-                  setMovies(response.Search.filter(t => t.Type === type))
-              }
-              if(!type){
-              setMovies(response.Search) 
-          }} )
         
-  
+        const [movies, setMovies] = React.useState([])
+          const link = `
+          https://www.omdbapi.com/?s=${keyword}&page=2&apikey=b293d970&r=json
+          `
+          React.useEffect(() => {
+            if (!keyword) {
+              return
+            }
+            fetch(link)
+            .then(r =>r.json())
           
-        }, [keyword,type])
-
+            .then(response => {
+                if(type){
+                    setMovies(response.Search.filter(t => t.Type === type))
+                }
+                if(!type){
+                setMovies(response.Search) 
+            }} )  
+          }, [keyword,type])
+      
         return(
-
-    <tbody className="w-full">
+          
+          <tbody className="w-full">
     { movies.map((movie,i)=> (                             
-                        <tr tabindex="0" className="focus:outline-none h-20 text-sm leading-none text-gray-800 bg-white hover:bg-gray-100 border-b border-t border-gray-100" key={i}>
-                            <td className="pl-4 cursor-pointer">{i+1}
-                                </td>
-                                <td className="pl-4 cursor-pointer p-10">
-                                    
-                                    <img className="w-full h-full" src={movie.Poster} alt="movie" />
-                                    
+      <tr tabindex="0" className="focus:outline-none h-20 text-sm leading-none text-gray-800 bg-white hover:bg-gray-100 border-b border-t border-gray-100" key={i}>
+        <td className="pl-4 cursor-pointer">{i+1}
+          </td>
+          <td className="pl-4 cursor-pointer p-10">
+            
+            <img className="w-full h-full" src={movie.Poster} alt="movie" />
+            
                                     </td>
                                     <td className="pl-12">
                                         
-                                <p className="text-sm font-medium leading-none text-gray-800">{movie.Title}</p>
+                                      <p className="text-sm font-medium leading-none text-gray-800">{movie.Title}</p>
                             
-                            </td>
-                            <td className="pl-12">
+                                      </td>
+                                      <td className="pl-12">
                                 <p className="font-medium">{movie.Year}</p>
-                               
+                                
                             </td>
                             <td className="pl-20">
                                 <p className="font-medium">{movie.Type}</p>
-                            </td>
+                                </td>
                             <td className="px-7 2xl:px-0">
-                                <button  className="focus:ring-2 rounded-md focus:outline-none ml-7" role="button" aria-label="options">
-        
-                                </button>
-                            </td>
+                              <button  className="focus:ring-2 rounded-md focus:outline-none ml-7" role="button" aria-label="options" onClick={()=>setMovies(movies.filter(i=> i !== movie))} >
+                             
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                                  </svg>
+                                  </button>
+                                  </td>
                         </tr>
                        
-     ) )}
-                </tbody>
-                    
-        )
-  
-      }
-  
-      function App() {
-
-        const [keyword, setKeyword] = React.useState('')
-        const [type, setType] = React.useState()
+                        ) )}
+                        </tbody>
+                        
+                        )
+                        
+                      }
+                      
+ function App() {
+                        
+const [keyword, setKeyword] = React.useState('')
+const [type, setType] = React.useState()
 
 
         function searchBar(event) {
@@ -102,8 +102,8 @@
                     <div class=" flex justify-between w-full sm:px-6">
                         <label htmlFor="keyword"></label>
     <form  className="flex" onSubmit={searchBar} >
-    <input className=" rounded p-2"  type="text" placeholder="Search..." id="keyword"/>
-    <button type="submit" className="bg-white w-auto flex justify-end items-center text-blue-500 p-2 hover:text-blue-400">
+    <input className=" rounded p-2"  type="text" placeholder="Search..." id="keyword"  />
+    <button type="submit" className="bg-white w-auto flex justify-end items-center text-blue-500 p-2 hover:text-blue-400" >
         <i className="material-icons">search</i>
     </button>
 </form>
@@ -134,7 +134,7 @@
                         </tr>
                     </thead>
                     
-                   <MovieInfo keyword={keyword} type={type}/>
+                   <MovieInfo  keyword={keyword} type={type} />
          
                 </table>
             </div>
