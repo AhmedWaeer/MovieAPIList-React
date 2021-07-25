@@ -1,0 +1,155 @@
+<body>
+    <div id="root"></div>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/react@16.12.0/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16.12.0/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.8.3/babel.js"></script>
+    <script src="https://unpkg.com/msw@0.20.5/lib/umd/index.js"></script>
+  
+  
+    <script type="text/babel">
+
+      function MovieInfo({keyword,type}) {
+        const link = `
+        https://www.omdbapi.com/?s=${keyword}&page=2&apikey=b293d970&r=json
+        `
+        const [movies, setMovies] = React.useState([])
+    const arr = []
+  
+        React.useEffect(() => {
+          if (!keyword) {
+            return
+          }
+          fetch(link)
+          .then(r => r.json())
+          .then(response => {
+              if(type){
+                  setMovies(response.Search.filter(t => t.Type === type))
+              }
+              if(!type){
+              setMovies(response.Search) 
+          }} )
+        
+  
+          
+        }, [keyword,type])
+
+        return(
+
+    <tbody className="w-full">
+    { movies.map((movie,i)=> (                             
+                        <tr tabindex="0" className="focus:outline-none h-20 text-sm leading-none text-gray-800 bg-white hover:bg-gray-100 border-b border-t border-gray-100" key={i}>
+                            <td className="pl-4 cursor-pointer">{i+1}
+                                </td>
+                                <td className="pl-4 cursor-pointer p-10">
+                                    
+                                    <img className="w-full h-full" src={movie.Poster} alt="movie" />
+                                    
+                                    </td>
+                                    <td className="pl-12">
+                                        
+                                <p className="text-sm font-medium leading-none text-gray-800">{movie.Title}</p>
+                            
+                            </td>
+                            <td className="pl-12">
+                                <p className="font-medium">{movie.Year}</p>
+                               
+                            </td>
+                            <td className="pl-20">
+                                <p className="font-medium">{movie.Type}</p>
+                            </td>
+                            <td className="px-7 2xl:px-0">
+                                <button  className="focus:ring-2 rounded-md focus:outline-none ml-7" role="button" aria-label="options">
+        
+                                </button>
+                            </td>
+                        </tr>
+                       
+     ) )}
+                </tbody>
+                    
+        )
+  
+      }
+  
+      function App() {
+
+        const [keyword, setKeyword] = React.useState('')
+        const [type, setType] = React.useState()
+
+
+        function searchBar(event) {
+          event.preventDefault()
+          setKeyword(event.target.elements.keyword.value)
+        }
+          function handleMovie(e){
+            e.preventDefault()
+         setType(e.target.value)
+          }
+          function handleSeries(e){
+            e.preventDefault()
+         setType(e.target.value)
+          }
+        
+  
+        return (
+     
+            <div className="container mx-auto">
+
+    
+            <div className="px-4 md:px-10 py-4 md:py-7 bg-gray-100 rounded-tl-lg rounded-tr-lg">
+                <div className="sm:flex items-center justify-between">
+                    <div class=" flex justify-between w-full sm:px-6">
+                        <label htmlFor="keyword"></label>
+    <form  className="flex" onSubmit={searchBar} >
+    <input className=" rounded p-2"  type="text" placeholder="Search..." id="keyword"/>
+    <button type="submit" className="bg-white w-auto flex justify-end items-center text-blue-500 p-2 hover:text-blue-400">
+        <i className="material-icons">search</i>
+    </button>
+</form>
+<form>
+    <div className="mt-2">
+    <label className="inline-flex items-center"/>
+      <input type="radio" class="form-radio" name="type" id="Movie" value="movie" onChange={handleMovie}/>
+      <span className="ml-2">Movie</span>
+   
+    <label className="inline-flex items-center ml-6"/>
+      <input type="radio" className="form-radio" name="type" value="series" id="series" onChange={handleSeries}  />
+      <span className="ml-2">Series</span>
+      </div>
+      </form>
+
+                </div>
+            </div>
+            <div className="bg-white shadow px-4 md:px-10 pt-4 md:pt-7 pb-5 overflow-y-auto">
+                <table className="w-full whitespace-nowrap">
+                    <thead>
+                        <tr tabindex="0" class="focus:outline-none h-16 w-full text-sm leading-none text-gray-800">
+                            <th className="font-normal text-left pl-4">no.</th>
+                            <th className="font-normal text-left pl-4"></th>
+                            <th className="font-normal text-left pl-12">Title</th>
+                            <th className="font-normal text-left pl-12">Release date</th>
+                            <th className="font-normal text-left pl-20">Type</th>
+                            <th className="font-normal text-left pl-16"></th>
+                        </tr>
+                    </thead>
+                    
+                   <MovieInfo keyword={keyword} type={type}/>
+         
+                </table>
+            </div>
+        </div>
+        
+        
+    
+</div>
+
+        )
+      }
+  
+   
+  
+      ReactDOM.render(<App />, document.getElementById('root'))
+    </script>
+  </body>
+  
